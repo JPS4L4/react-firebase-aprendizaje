@@ -10,3 +10,4 @@ export const useRedirectActiveUser = (user, path) => {
     }
   }, [user]);
 };
+
