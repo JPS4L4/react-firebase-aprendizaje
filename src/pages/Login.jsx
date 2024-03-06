@@ -4,6 +4,11 @@ import { useRedirectActiveUser } from "../hooks/useRedirectActiveUser";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
+import { Avatar, Box, Button, TextField, Typography } from "@mui/material";
+import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
+import { LoadingButton } from "@mui/lab";
+import { Link } from "react-router-dom";
+
 const onSubmit = async (
   { email, password },
   { setSubmitting, setErrors, resetForm }
@@ -37,62 +42,78 @@ const Login = () => {
 
   return (
     <>
-      <h1>Login</h1>
-      <Formik
-        initialValues={{ email: "", password: "" }}
-        onSubmit={onSubmit}
-        validationSchema={validationSchema}
-      >
-        {({
-          values,
-          handleSubmit,
-          handleChange,
-          errors,
-          touched,
-          handleBlur,
-          isSubmitting,
-        }) => (
-          <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              placeholder="Ingrese Email"
-              value={values.email}
-              onChange={handleChange}
-              name="email"
-              onBlur={handleBlur}
-              className="form-control m-3"
-            />
-            {errors.email && touched.email && errors.email}
-            <input
-              type="password"
-              placeholder="Ingrese Contraseña"
-              value={values.password}
-              onChange={handleChange}
-              name="password"
-              onBlur={handleBlur}
-              className="form-control m-3"
-            />
-            {errors.password && touched.password && errors.password}
-            <div className="text-center">
-              {isSubmitting ? (
-                <>
-                  <p className="lead">Login...</p>
-                </>
-              ) : (
-                <>
-                  <button
-                    type="submit"
-                    className="btn btn-outline-primary"
-                    disabled={isSubmitting}
-                  >
-                    Login
-                  </button>
-                </>
-              )}
-            </div>
-          </form>
-        )}
-      </Formik>
+      <Box sx={{ mt: 8, maxWidth: "400px", mx: "auto", textAlign: "center" }}>
+        <Avatar sx={{ mx: "auto", bgcolor: "#111" }}>
+          <AddAPhotoIcon />
+        </Avatar>
+
+        <Typography variant="h5" component="h1">
+          Login
+        </Typography>
+
+        <Formik
+          initialValues={{ email: "", password: "" }}
+          onSubmit={onSubmit}
+          validationSchema={validationSchema}
+        >
+          {({
+            values,
+            handleSubmit,
+            handleChange,
+            errors,
+            touched,
+            handleBlur,
+            isSubmitting,
+          }) => (
+            <Box onSubmit={handleSubmit} sx={{ mt: 1 }} component={"form"}>
+              <TextField
+                type="text"
+                placeholder="email@example.com"
+                value={values.email}
+                onChange={handleChange}
+                name="email"
+                onBlur={handleBlur}
+                id="email"
+                label="Ingrese Email"
+                fullWidth
+                sx={{ mb: 3 }}
+                error={errors.email && touched.email}
+                helperText={errors.email && touched.email && errors.email}
+              />
+
+              <TextField
+                type="password"
+                value={values.password}
+                onChange={handleChange}
+                name="password"
+                onBlur={handleBlur}
+                id="password"
+                label="Ingrese Contraseña"
+                fullWidth
+                sx={{ mb: 3 }}
+                error={errors.password && touched.password}
+                helperText={
+                  errors.password && touched.password && errors.password
+                }
+              />
+              <LoadingButton
+                type="submit"
+                disabled={isSubmitting}
+                loading={isSubmitting}
+                variant="contained"
+                fullWidth
+                sx={{ mb: 3, mx: "auto" }}
+              >
+                Acceder
+              </LoadingButton>
+
+              <Button fullWidth component={Link} to="/register">
+                ¿No tienes cuenta?, Registrate
+              </Button>
+            </Box>
+          )}
+        </Formik>
+      </Box>
     </>
   );
 };
